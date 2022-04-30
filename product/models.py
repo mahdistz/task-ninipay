@@ -7,6 +7,11 @@ class CommonInfo(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     count = models.IntegerField()
+    image = models.ImageField(null=True, blank=True)
+    description = models.CharField(max_length=100,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+    expire_at = models.DateField()
 
     class Meta:
         abstract = True
@@ -16,7 +21,6 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     subcategory = models.ForeignKey('self', null=True, blank=True,
                                     related_name='subcategories', on_delete=models.CASCADE)
-    slug = models.SlugField()
 
     def __str__(self):
         return self.name
@@ -29,14 +33,27 @@ class Brand(models.Model):
         return self.name
 
 
-product_type = [
-    ('1', 'آرایشی بهداشتی'),
-    ('2', 'شوینده'),
-    ('3', 'خوراکی'),
-]
+class ProductType1(CommonInfo):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+    objects = ProductManager()
+
+    def __str__(self):
+        return self.name
 
 
-class Product(CommonInfo):
+class ProductType2(CommonInfo):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+    objects = ProductManager()
+
+    def __str__(self):
+        return self.name
+
+
+class ProductType3(CommonInfo):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 

@@ -1,25 +1,43 @@
 from rest_framework import serializers
-from .models import Product, Category, Brand
+from .models import ProductType1, Category, Brand, ProductType2, ProductType3
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     subcategory = serializers.StringRelatedField(read_only=True, required=False)
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['name', 'subcategory']
 
 
-class BrandSerializer(serializers.HyperlinkedModelSerializer):
+class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = '__all__'
+        fields = ['name', 'id']
 
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class ProductType1Serializer(serializers.ModelSerializer):
     category = CategorySerializer()
     brand = BrandSerializer()
 
     class Meta:
-        model = Product
+        model = ProductType1
+        fields = '__all__'
+
+
+class ProductType2Serializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    brand = BrandSerializer()
+
+    class Meta:
+        model = ProductType2
+        fields = '__all__'
+
+
+class ProductType3Serializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    brand = BrandSerializer()
+
+    class Meta:
+        model = ProductType3
         fields = '__all__'
